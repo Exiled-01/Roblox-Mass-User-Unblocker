@@ -30,7 +30,7 @@ A Chrome extension that safely mass unblocks users from your Roblox blocked list
 
 ## Configuration
 
-You can adjust the timing in `content.js`:
+You can adjust the timing in `content.js` or alternatively use the html ui:
 
 ```javascript
 const DELAY_BETWEEN_REQUESTS = 1200; // milliseconds between each unblock
@@ -69,5 +69,6 @@ This extension:
 Free to use and modify for personal use.
 
 ## Notes
+
 
 Developed based on rate limit testing that determined Roblox's unblock API limit is approximately 2.2 requests/second.
