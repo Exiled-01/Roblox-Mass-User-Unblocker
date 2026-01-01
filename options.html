@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roblox Mass Unblock - Settings</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .header {
+            background: #00a2ff;
+            color: white;
+            padding: 20px 30px;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .info-box {
+            background: #e8f4f8;
+            border-left: 3px solid #00a2ff;
+            padding: 15px;
+            margin-bottom: 25px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .setting-group {
+            margin-bottom: 25px;
+        }
+
+        .setting-group h2 {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .setting-item {
+            margin-bottom: 20px;
+        }
+
+        .setting-item label {
+            display: block;
+            font-weight: 500;
+            color: #555;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .setting-item .description {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 8px;
+        }
+
+        .setting-item input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        .setting-item input[type="number"]:focus {
+            outline: none;
+            border-color: #00a2ff;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .input-group input {
+            flex: 1;
+        }
+
+        .input-group .unit {
+            color: #666;
+            font-size: 14px;
+            min-width: 60px;
+        }
+
+        .preset-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .preset-btn {
+            padding: 12px;
+            border: 1px solid #ddd;
+            background: white;
+            color: #333;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .preset-btn:hover {
+            background: #f8f9fa;
+            border-color: #00a2ff;
+        }
+
+        .preset-btn small {
+            display: block;
+            font-size: 11px;
+            color: #888;
+            margin-top: 3px;
+        }
+
+        .warning-box {
+            background: #fff8e1;
+            border-left: 3px solid #ffa726;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .calculation {
+            background: #f8f9fa;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .calculation h3 {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .calculation .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+        }
+
+        .calculation .stat {
+            text-align: center;
+        }
+
+        .calculation .stat .label {
+            font-size: 11px;
+            color: #888;
+            margin-bottom: 5px;
+        }
+
+        .calculation .stat .value {
+            font-size: 16px;
+            font-weight: 600;
+            color: #00a2ff;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #00a2ff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0081cc;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .status-message {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 14px;
+            display: none;
+        }
+
+        .status-message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Mass Unblock Settings</h1>
+            <p>Configure rate limiting and batch processing</p>
+        </div>
+
+        <div class="content">
+            <div class="info-box">
+                <strong>Rate Limit Information:</strong> Roblox's unblock API has a limit of approximately 2.2 requests/second or ~25-30 requests per 12 seconds. Exceeding this will temporarily block your requests.
+            </div>
+
+            <div class="setting-group">
+                <h2>Timing Settings</h2>
+                
+                <div class="setting-item">
+                    <label for="delay">Delay Between Requests</label>
+                    <div class="description">Time to wait between each unblock request (in milliseconds)</div>
+                    <div class="input-group">
+                        <input type="number" id="delay" min="0" max="10000" step="100" value="1200">
+                        <span class="unit">ms</span>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <label for="batchSize">Batch Size</label>
+                    <div class="description">Number of users to process before taking a longer pause</div>
+                    <div class="input-group">
+                        <input type="number" id="batchSize" min="1" max="100" step="1" value="20">
+                        <span class="unit">users</span>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <label for="batchDelay">Batch Delay</label>
+                    <div class="description">Pause duration after completing each batch (in milliseconds)</div>
+                    <div class="input-group">
+                        <input type="number" id="batchDelay" min="0" max="60000" step="1000" value="8000">
+                        <span class="unit">ms</span>
+                    </div>
+                </div>
+
+                <div class="calculation">
+                    <h3>Estimated Performance</h3>
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="label">Requests/Second</div>
+                            <div class="value" id="reqPerSec">0.83</div>
+                        </div>
+                        <div class="stat">
+                            <div class="label">Time for 100 Users</div>
+                            <div class="value" id="time100">2.5m</div>
+                        </div>
+                        <div class="stat">
+                            <div class="label">Time for 800 Users</div>
+                            <div class="value" id="time800">20m</div>
+                        </div>
+                        <div class="stat">
+                            <div class="label">Safety Level</div>
+                            <div class="value" id="safetyLevel">Safe</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="setting-group">
+                <h2>Quick Presets</h2>
+                <div class="preset-buttons">
+                    <button class="preset-btn" data-preset="safest">
+                        Safest<br>
+                        <small>1.5s delay, 15 batch</small>
+                    </button>
+                    <button class="preset-btn" data-preset="recommended">
+                        Recommended<br>
+                        <small>1.2s delay, 20 batch</small>
+                    </button>
+                    <button class="preset-btn" data-preset="balanced">
+                        Balanced<br>
+                        <small>1.0s delay, 25 batch</small>
+                    </button>
+                    <button class="preset-btn" data-preset="aggressive">
+                        Aggressive<br>
+                        <small>0.8s delay, 30 batch</small>
+                    </button>
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <strong>Warning:</strong> Setting delays too low may trigger Roblox's rate limiting, which will temporarily prevent you from unblocking users. The recommended settings are optimized based on testing to avoid this issue.
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-primary" id="saveBtn">Save Settings</button>
+                <button class="btn btn-secondary" id="resetBtn">Reset to Defaults</button>
+            </div>
+
+            <div class="status-message" id="statusMessage"></div>
+        </div>
+    </div>
+
+    <script src="options.js"></script>
+</body>
+</html>
