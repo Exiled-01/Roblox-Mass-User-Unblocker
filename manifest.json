@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Roblox Mass User Unblocker",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Safely mass unblock users from your Roblox blocked list with rate limiting",
   "permissions": [
     "storage"
@@ -22,6 +22,12 @@
     "page": "options.html",
     "open_in_tab": true
   },
+  "web_accessible_resources": [
+    {
+      "resources": ["options.html"],
+      "matches": ["https://www.roblox.com/*"]
+    }
+  ],
   "icons": {
     "16": "icon16.png",
     "48": "icon48.png",
