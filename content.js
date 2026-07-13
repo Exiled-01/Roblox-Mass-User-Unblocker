@@ -28,6 +28,11 @@
             if (changes.batchSize) settings.batchSize = changes.batchSize.newValue;
             if (changes.batchDelay) settings.batchDelay = changes.batchDelay.newValue;
             console.log('Settings updated:', settings);
+
+            const settingsDisplay = document.getElementById('settings-display');
+            if (settingsDisplay) {
+                settingsDisplay.textContent = `${settings.delay}ms delay, ${settings.batchSize} user batches`;
+            }
         }
     });
 
@@ -86,7 +91,8 @@
     }
 
     // Unblock a single user
-    async function unblockUser(targetUserId) {
+    // Returns { ok: boolean, rateLimited: boolean }
+    async function unblockUser(targetUserId, retriesLeft = 3) {
         const csrfToken = getCSRFToken();
         
         const response = await fetch(`https://apis.roblox.com/user-blocking-api/v1/users/${targetUserId}/unblock-user`, {
@@ -100,13 +106,18 @@
 
         if (response.status === 403) {
             const newToken = response.headers.get('x-csrf-token');
-            if (newToken) {
+            if (newToken && retriesLeft > 0) {
                 document.querySelector('meta[name="csrf-token"]').setAttribute('content', newToken);
-                return unblockUser(targetUserId);
+                return unblockUser(targetUserId, retriesLeft - 1);
             }
+            return { ok: false, rateLimited: false, expired: true };
         }
 
-        return response.ok;
+        if (response.status === 429) {
+            return { ok: false, rateLimited: true };
+        }
+
+        return { ok: response.ok, rateLimited: false };
     }
 
     // Sleep function
@@ -189,13 +200,22 @@
                 const userId = user.blockedUserId;
                 
                 try {
-                    const success = await unblockUser(userId);
+                    const result = await unblockUser(userId);
                     processedCount++;
                     
                     progressEl.textContent = `${processedCount} / ${totalUsers}`;
                     
-                    if (success) {
+                    if (result.ok) {
                         updateUI(`Unblocked user ID: ${userId}`, 'success');
+                    } else if (result.rateLimited) {
+                        const backoff = settings.batchDelay * 2;
+                        updateUI(`Rate limited. Backing off for ${backoff/1000}s...`, 'error');
+                        i--; // retry this user after backing off
+                        processedCount--;
+                        await sleep(backoff);
+                        continue;
+                    } else if (result.expired) {
+                        updateUI(`Session/CSRF token invalid. Try refreshing the page and logging in again.`, 'error');
                     } else {
                         updateUI(`Failed user ID: ${userId}`, 'error');
                     }
